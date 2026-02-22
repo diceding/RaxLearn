@@ -9,6 +9,14 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+// Add this BEFORE the createClient call
+console.log('ENV CHECK:', {
+  url: import.meta.env.VITE_SUPABASE_URL ? 'EXISTS' : 'MISSING',
+  urlLength: import.meta.env.VITE_SUPABASE_URL?.length,
+  key: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'EXISTS' : 'MISSING',
+  keyLength: import.meta.env.VITE_SUPABASE_ANON_KEY?.length,
+});
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export type Database = {
