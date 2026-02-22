@@ -16,8 +16,10 @@ export function Onboarding() {
   const [selectedSkillLevel, setSelectedSkillLevel] = useState<string>('beginner');
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>('');
 
   const handleComplete = async () => {
+    setError('');
     setLoading(true);
     try {
       await updateProfile({
@@ -25,8 +27,9 @@ export function Onboarding() {
         current_skill_level: selectedSkillLevel as 'beginner' | 'intermediate' | 'advanced',
         onboarding_completed: true,
       });
-    } catch (error) {
-      console.error('Error completing onboarding:', error);
+    } catch (err) {
+      console.error('Error completing onboarding:', err);
+      setError(err instanceof Error ? err.message : 'Could not save. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -142,10 +145,16 @@ export function Onboarding() {
                 </button>
               ))}
             </div>
+            {error && (
+              <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg text-red-600 dark:text-red-300 text-sm">
+                {error}
+              </div>
+            )}
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => setStep(1)}
-                className="flex-1 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors font-medium"
+                disabled={loading}
+                className="flex-1 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 disabled:opacity-50 transition-colors font-medium"
               >
                 Back
               </button>

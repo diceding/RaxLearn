@@ -178,6 +178,20 @@ npm run build
 npm run typecheck
 ```
 
+### "No API key found in request"
+This means the Supabase anon key is not reaching the API. Fix it by:
+
+1. **Local development**: Ensure `.env` exists in the **project root** (same folder as `package.json`) with:
+   ```
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your_anon_key_here
+   ```
+   No quotes, no spaces around `=`. Restart the dev server after changing `.env` (`Ctrl+C` then `npm run dev`).
+
+2. **Production / deployed app**: Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in your host’s environment variables (Vercel, Netlify, etc.). Rebuild and redeploy after setting them.
+
+3. **Using `npm run preview`**: The build bakes in env vars from the machine where you ran `npm run build`. Run `npm run build` again with `.env` present, then run `npm run preview`.
+
 ### Database Connection Issues
 1. Verify your `.env` file has correct Supabase credentials
 2. Check that your Supabase project is active
